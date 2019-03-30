@@ -25,6 +25,14 @@ app.use((req, res, next) => {
 });
 
 // Route handlers
+app.use("/", () => {
+    return express.Router().get('/', (req, res, next) => {
+        res.status(200).json({
+            Response: "Welcome"
+        });
+    })
+});
+});
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
 app.use("/user", userRouters);
