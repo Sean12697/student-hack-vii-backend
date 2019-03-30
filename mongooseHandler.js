@@ -61,7 +61,7 @@ class mongooseHandler {
                 console.log(`Signup Users: ${users.length}`);
                 console.log(`Signup Users: ${users.map(u => u.email).toString()}`);
                 // if a user has that email address, don't insert
-                let key = (users.length > 0) ? "" : this._signup(email, password);
+                let key = (users.length > 0) ? "" : await this._signup(email, password);
                 resolve(key);
             });
         });
@@ -77,7 +77,7 @@ class mongooseHandler {
                 // Removing user/s where the password does not match up
                 users = users.filter(user => bcrypt.compareSync(password, user.password));
                 // if user exists, insert and return session key
-                let key = (users.length === 1) ? this._signin(users[0]) : "";
+                let key = (users.length === 1) ? await this._signin(users[0]) : "";
                 resolve(key);
             });
         });
@@ -190,33 +190,38 @@ class mongooseHandler {
         });
     }
 
-    _signin(user) {
-        let session_key = this.generateUniqueSessionKey();
-        user.session_key.push(session_key);
-        UserModel.findOneAndUpdate({
-            email: user.email,
-            password: user.password
-        }, user, {
-            upsert: true,
-            useFindAndModify: false
-        }, (err, doc) => {
-            console.log(`ERROR: '${user.email}' Signin - ${err}`)
+    async _signin(user) {
+        return new Promise(resolve => {
+            let session_key = this.generateUniqueSessionKey();
+            user.session_key.push(session_key);
+            UserModel.findOneAndUpdate({
+                email: user.email,
+                password: user.password
+            }, user, {
+                upsert: true,
+                useFindAndModify: false
+            }, (err, doc) => {
+                console.log(`ERROR: '${user.email}' Signin - ${err}`);
+                resolve(session_key);
+            });
         });
-        return session_key;
     }
 
-    _signup(email, password) {
-        let session_key = this.generateUniqueSessionKey(),
-            encrypted = bcrypt.hashSync(password, 7);
-        (new UserModel({
-            email: email,
-            password: encrypted,
-            session_key: [session_key],
-            details: {},
-            portfolios: [],
-            items: []
-        })).save();
-        return session_key;
+    async _signup(email, password) {
+        return new Promise(resolve => {
+            let session_key = this.generateUniqueSessionKey(),
+                encrypted = bcrypt.hashSync(password, 7);
+            (new UserModel({
+                email: email,
+                password: encrypted,
+                session_key: [session_key],
+                details: {},
+                portfolios: [],
+                items: []
+            })).save((err, doc, row) => {
+                resolve(session_key);
+            });
+        });
     }
 
     generateUniqueSessionKey() {
