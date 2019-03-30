@@ -1,3 +1,5 @@
+import { builtinModules } from 'module';
+
 const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
@@ -214,4 +216,4 @@ class mongooseHandler {
     }
 }
 
-export {mongoose,mongooseHandler};
+module.exports = mongooseHandler;
