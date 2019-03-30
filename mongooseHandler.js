@@ -64,7 +64,7 @@ class mongooseHandler {
                 if (users.length < 0) {
                     this._signup(email, password).then(key => resolve(key));
                 } else {
-                    resolve(key);
+                    resolve("");
                 }
             });
         });
