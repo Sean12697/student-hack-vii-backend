@@ -52,10 +52,12 @@ class mongooseHandler {
     }
 
     async signup(email, password) {
+        console.log(`Signup: ${email}`);
         return new Promise(resolve => {
             UserModel.find({
                 email: email,
             }, (err, users) => {
+                console.log(`Signup Users: ${users.map(u => u.email).toString()}`);
                 // if a user has that email address, don't insert
                 let key = (users.length > 0) ? "" : this._signup(email, password);
                 resolve(key);
@@ -64,10 +66,12 @@ class mongooseHandler {
     }
 
     async signin(email, password) {
+        console.log(`Signin: ${email}`);
         return new Promise(resolve => {
             UserModel.find({
                 email: email
             }, (err, users) => {
+                console.log(`Signin Users: ${users.map(u => u.email).toString()}`);
                 // Removing user/s where the password does not match up
                 users = users.filter(user => bcrypt.compareSync(password, user.password));
                 // if user exists, insert and return session key
