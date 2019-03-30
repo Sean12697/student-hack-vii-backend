@@ -4,7 +4,7 @@ const mongooseConnection = new mongooseHandler();
 const router = express.Router();
 
 router.post('/', (req, res, next) => {
-    mongooseConnection.signin(req.body.email, req.body.password).then(categories => {
+    mongooseConnection.signin(req.body.email, req.body.password).then(session_key => {
         res.status(200).json({
             session_key
         });
