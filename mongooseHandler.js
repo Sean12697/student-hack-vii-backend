@@ -203,7 +203,7 @@ class mongooseHandler {
     _signup(email, password) {
         let session_key = this.generateUniqueSessionKey(),
             encrypted = bcrypt.hashSync(password, 7);
-        (new User({
+        (new UserModel({
             email: email,
             password: encrypted,
             session_key: [session_key],
