@@ -61,8 +61,11 @@ class mongooseHandler {
                 console.log(`Signup Users: ${users.length}`);
                 console.log(`Signup Users: ${users.map(u => u.email).toString()}`);
                 // if a user has that email address, don't insert
-                let key = (users.length > 0) ? "" : await this._signup(email, password);
-                resolve(key);
+                if (users.length < 0) {
+                    this._signup(email, password).then(key => resolve(key));
+                } else {
+                    resolve(key);
+                }
             });
         });
     }
@@ -77,8 +80,11 @@ class mongooseHandler {
                 // Removing user/s where the password does not match up
                 users = users.filter(user => bcrypt.compareSync(password, user.password));
                 // if user exists, insert and return session key
-                let key = (users.length === 1) ? await this._signin(users[0]) : "";
-                resolve(key);
+                if (users.length === 1) {
+                    this._signin(users[0]).then(key => resolve(key));
+                } else {
+                    resolve("");
+                }
             });
         });
     }
