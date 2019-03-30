@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 let Schema = mongoose.Schema;
 
 const Details = new Schema({
@@ -65,9 +66,10 @@ class mongooseHandler {
     async signin(email, password) {
         return new Promise(resolve => {
             UserModel.find({
-                email: email,
-                password: password
+                email: email
             }, (err, users) => {
+                // Removing user/s where the password does not match up
+                users = users.filter(user => bcrypt.compareSync(password, user.password));
                 // if user exists, insert and return session key
                 let key = (users.length === 1) ? this._signin(users[0]) : "";
                 resolve(key);
@@ -195,10 +197,11 @@ class mongooseHandler {
     }
 
     _signup(email, password) {
-        let session_key = this.generateUniqueSessionKey();
+        let session_key = this.generateUniqueSessionKey(),
+            encrypted = bcrypt.hashSync(password, 7);
         (new User({
             email: email,
-            password: password,
+            password: encrypted,
             session_key: [session_key],
             details: {},
             portfolios: [],
