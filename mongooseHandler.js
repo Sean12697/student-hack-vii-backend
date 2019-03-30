@@ -40,13 +40,13 @@ const User = new Schema({
 });
 
 const UserModel = mongoose.model("User", User, "users");
-
 class mongooseHandler {
     constructor() {
+        console.log("Connection")
         mongoose.connect(`mongodb+srv://admin:${process.env.MONGO_ATLAS_PW || require("./nodemon.json").env.MONGO_ATLAS_PW}@cv-generator-vxyqt.mongodb.net/test?retryWrites=true`, {
             useNewUrlParser: true
         }, err => {
-            if (err) console.log(err);
+            if (err) console.log(err)
         });
     }
 

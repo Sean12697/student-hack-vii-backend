@@ -3,7 +3,7 @@ const mongooseHandler = require('../../mongooseHandler');
 const mongooseConnection = new mongooseHandler();
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.post('/details', (req, res, next) => {
     mongooseConnection.getUser(req.body.email, req.body.session_key).then(user => {
         res.status(200).json({
             user
