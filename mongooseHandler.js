@@ -43,9 +43,11 @@ const UserModel = mongoose.model("User", User, "users");
 
 class mongooseHandler {
     constructor() {
-        mongoose.connect(`mongodb+srv://admin:${process.env.MONGO_ATLAS_PW}@cv-generator-vxyqt.mongodb.net/test?retryWrites=true`, {
+        mongoose.connect(`mongodb+srv://admin:${process.env.MONGO_ATLAS_PW || require("./nodemon.json").env.MONGO_ATLAS_PW}@cv-generator-vxyqt.mongodb.net/test?retryWrites=true`, {
             useNewUrlParser: true
-        }, err => console.log(err));
+        }, err => {
+            if (err) console.log(err);
+        });
     }
 
     async signup(email, password) {
