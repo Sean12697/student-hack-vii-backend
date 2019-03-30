@@ -61,7 +61,7 @@ class mongooseHandler {
                 console.log(`Signup Users: ${users.length}`);
                 console.log(`Signup Users: ${users.map(u => u.email).toString()}`);
                 // if a user has that email address, don't insert
-                if (users.length < 0) {
+                if (users.length == 0) {
                     this._signup(email, password).then(key => resolve(key));
                 } else {
                     resolve("");
