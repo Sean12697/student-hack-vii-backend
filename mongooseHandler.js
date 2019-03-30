@@ -57,6 +57,8 @@ class mongooseHandler {
             UserModel.find({
                 email: email,
             }, (err, users) => {
+                console.log(`Signup Users: ${users}`);
+                console.log(`Signup Users: ${users.length}`);
                 console.log(`Signup Users: ${users.map(u => u.email).toString()}`);
                 // if a user has that email address, don't insert
                 let key = (users.length > 0) ? "" : this._signup(email, password);
