@@ -231,7 +231,7 @@ class mongooseHandler {
     }
 
     generateUniqueSessionKey() {
-        return Math.random().toString(36).substring(64);
+        return (new Array(9).fill("")).map(i => Math.random().toString(36).substring(7)).reduce((pre, curr) => pre += curr, "");
     }
 
     close() {
