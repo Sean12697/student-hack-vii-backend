@@ -102,7 +102,8 @@ class mongooseHandler {
                     "$options": "i"
                 }
             }, newUser, {
-                upsert: true
+                upsert: true,
+                useFindAndModify: false
             }, (err, doc) => {
                 console.log(`ERROR: '${users[0].email}' Add Item - ${err}`)
             });
@@ -124,7 +125,8 @@ class mongooseHandler {
                     "$options": "i"
                 }
             }, newUser, {
-                upsert: true
+                upsert: true,
+                useFindAndModify: false
             }, (err, doc) => {
                 console.log(`ERROR: '${users[0].email}' Update - ${err}`)
             });
@@ -195,7 +197,8 @@ class mongooseHandler {
             email: user.email,
             password: user.password
         }, user, {
-            upsert: true
+            upsert: true,
+            useFindAndModify: false
         }, (err, doc) => {
             console.log(`ERROR: '${user.email}' Signin - ${err}`)
         });
