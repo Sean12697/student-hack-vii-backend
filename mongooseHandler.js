@@ -7,7 +7,7 @@ const Details = new Schema({
     surname: String,
     email: String,
     personal_statement: String,
-    socal_media: Object
+    social_media: Object
 });
 
 const Portfolios = new Schema({
