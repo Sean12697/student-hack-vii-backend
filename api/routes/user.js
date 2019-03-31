@@ -12,11 +12,10 @@ router.post('/details', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-    mongooseConnection.updateUser(req.body.newUser, req.body.email, req.body.session_key).then(response => {
-        res.status(200).json({
-            response
-        });
-    })
+    mongooseConnection.updateUser(req.body.newUser, req.body.email, req.body.session_key);
+    res.status(200).json({
+        response: "Attempting to Update User"
+    });
 });
 
 module.exports = router;

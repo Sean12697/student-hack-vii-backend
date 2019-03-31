@@ -125,7 +125,7 @@ class mongooseHandler {
             }
         }, (err, users) => {
             UserModel.findOneAndUpdate({
-                email: users[0].email,
+                email: email,
                 session_key: {
                     "$regex": session_key,
                     "$options": "i"
@@ -134,7 +134,7 @@ class mongooseHandler {
                 upsert: true,
                 useFindAndModify: false
             }, (err, doc) => {
-                console.log(`ERROR: '${users[0].email}' Update - ${err}`)
+                if (err) console.log(`ERROR: '${users[0].email}' Update - ${err}`);
             });
         });
     }
